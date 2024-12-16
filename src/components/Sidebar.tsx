@@ -18,7 +18,7 @@ export function Sidebar (){
     { 
       href: "/", 
       icon: Home, 
-      label: "Dashboard", 
+      label: "Appointments", 
       show: true 
     },
     { 
