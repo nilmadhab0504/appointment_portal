@@ -209,6 +209,7 @@ export default function AppointmentsDashboard() {
                     {appointment.time &&
                       new Intl.DateTimeFormat("en-US", {
                         month: "short",
+                        day:"2-digit",
                         year: "numeric",
                         hour: "numeric",
                         minute: "numeric",
