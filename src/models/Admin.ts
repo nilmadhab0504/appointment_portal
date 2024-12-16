@@ -32,7 +32,7 @@ const AdminSchema: Schema<AdminDocument> = new Schema<AdminDocument>(
       match: [
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         "Please provide a valid email address",
-      ], // Regex validation for email format
+      ], 
     },
     password: {
       type: String,
@@ -41,19 +41,17 @@ const AdminSchema: Schema<AdminDocument> = new Schema<AdminDocument>(
     },
   },
   {
-    timestamps: true, // Automatically manage `createdAt` and `updatedAt`
-    versionKey: false, // Remove `__v` field from documents
+    timestamps: true, 
+    versionKey: false,
   }
 );
 
-// Middleware to log changes for debugging purposes
 AdminSchema.pre("save", function (next) {
   console.log(`Admin document is being saved: ${this.name}`);
   next();
 });
 
-// Indexes for optimized queries
-AdminSchema.index({ email: 1 }); // Ensures quick lookup by email
+AdminSchema.index({ email: 1 });
 
 const Admin: Model<AdminDocument> =
   mongoose.models.Admin || mongoose.model<AdminDocument>('Admin', AdminSchema);

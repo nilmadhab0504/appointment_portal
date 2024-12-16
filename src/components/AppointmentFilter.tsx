@@ -1,5 +1,5 @@
-'use client';
-import { useState } from "react";
+"use client";
+import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -16,9 +16,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "./ui/input";
-import { useData, FilterOptions } from '../context/dataContext';
+import { useData, FilterOptions } from "../context/dataContext";
 import { format } from "date-fns";
-
 import { parseISO } from "date-fns";
 
 export function Filters({ setCurrentPage }: any) {
@@ -55,44 +54,67 @@ export function Filters({ setCurrentPage }: any) {
   };
 
   return (
-    <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <div
+      className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+      data-testid="appointment-filter"
+    >
       <div className="flex items-center gap-4 flex-wrap">
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground">Date :</span>
-          <Popover open={isStartDatePopoverOpen} onOpenChange={setIsStartDatePopoverOpen}>
+          <Popover
+            open={isStartDatePopoverOpen}
+            onOpenChange={setIsStartDatePopoverOpen}
+          >
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
                 className="justify-start text-left font-normal"
+                data-testid="start-date-button"
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {filterOptions.startDate ? format(parseISO(filterOptions.startDate), "MM/dd/yyyy") : "Select start date"}
+                {filterOptions.startDate
+                  ? format(parseISO(filterOptions.startDate), "MM/dd/yyyy")
+                  : "Select start date"}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
               <Calendar
                 mode="single"
-                selected={filterOptions.startDate ? parseISO(filterOptions.startDate) : undefined}
+                selected={
+                  filterOptions.startDate
+                    ? parseISO(filterOptions.startDate)
+                    : undefined
+                }
                 onSelect={(date) => date && handleDateChange(date, true)}
                 initialFocus
               />
             </PopoverContent>
           </Popover>
           <span className="text-sm text-muted-foreground">To</span>
-          <Popover open={isEndDatePopoverOpen} onOpenChange={setIsEndDatePopoverOpen}>
+          <Popover
+            open={isEndDatePopoverOpen}
+            onOpenChange={setIsEndDatePopoverOpen}
+          >
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
                 className="justify-start text-left font-normal"
+                data-testid="end-date-button"
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {filterOptions.endDate ? format(parseISO(filterOptions.endDate), "MM/dd/yyyy") : "Select end date"}
+                {filterOptions.endDate
+                  ? format(parseISO(filterOptions.endDate), "MM/dd/yyyy")
+                  : "Select end date"}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
               <Calendar
                 mode="single"
-                selected={filterOptions.endDate ? parseISO(filterOptions.endDate) : undefined}
+                selected={
+                  filterOptions.endDate
+                    ? parseISO(filterOptions.endDate)
+                    : undefined
+                }
                 onSelect={(date) => date && handleDateChange(date, false)}
                 initialFocus
               />
@@ -101,7 +123,11 @@ export function Filters({ setCurrentPage }: any) {
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground">Status</span>
-          <Select defaultValue={filterOptions.status || "all"} onValueChange={handleStatusChange}>
+          <Select
+            defaultValue={filterOptions.status || "all"}
+            onValueChange={handleStatusChange}
+            data-testid="status-select"
+          >
             <SelectTrigger className="w-[120px]">
               <SelectValue placeholder="Select status" />
             </SelectTrigger>
@@ -114,12 +140,14 @@ export function Filters({ setCurrentPage }: any) {
             </SelectContent>
           </Select>
         </div>
+
         <div className="flex items-center gap-2">
           <Input
             placeholder="Search appointments by name"
             value={searchTerm}
             onChange={handleSearchChange}
             className="w-64"
+            data-testid="search-input"
           />
         </div>
       </div>

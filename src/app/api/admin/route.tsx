@@ -16,7 +16,6 @@ export async function POST(req: NextRequest) {
     const body: AdminRequestBody = await req.json();
     const { name, email, password } = body;
 
-    // Input validation
     if (!name || !email || !password) {
       return NextResponse.json(
         { error: "Name, email, and password are required" },
@@ -31,7 +30,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check if the admin already exists
     const existingUser = await Admin.findOne({ email });
     if (existingUser) {
       return NextResponse.json(
@@ -40,10 +38,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Hash the password
     const passwordHash = await bcrypt.hash(password, 10);
 
-    // Create the new admin
     const newAdmin = new Admin({
       name,
       email,

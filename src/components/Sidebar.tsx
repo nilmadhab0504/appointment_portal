@@ -51,6 +51,7 @@ export function Sidebar (){
 
       {/* Sidebar - Desktop */}
       <aside 
+        data-testid="sidebar"
         className={`
           fixed top-0 left-0 h-full w-64 bg-background border-r 
           transform transition-transform duration-300 z-40
@@ -61,7 +62,7 @@ export function Sidebar (){
         <div className="flex flex-col h-full p-4">
           {/* Logo/Title */}
           <div className="mb-8 text-center">
-            <h1 className="text-xl font-bold truncate">
+            <h1 className="text-xl font-bold truncate" data-testid="sidebar-title">
               Appointment Portal
             </h1>
           </div>
@@ -76,6 +77,7 @@ export function Sidebar (){
                   icon={item.icon}
                   label={item.label}
                   active={pathname === item.href}
+                  data-testid={`nav-link-${item.label.toLowerCase().replace(" ", "-")}`}
                 />
               )
             ))}
@@ -88,6 +90,7 @@ export function Sidebar (){
                 variant="destructive" 
                 className="w-full"
                 onClick={() => signOut()}
+                data-testid="logout-button"
               >
                 <LogOut className="mr-2 h-4 w-4" />
                 Logout
@@ -96,6 +99,7 @@ export function Sidebar (){
               <Button 
                 className="w-full"
                 onClick={() => router.push("/login")}
+                data-testid="login-button"
               >
                 Login
               </Button>
@@ -109,6 +113,7 @@ export function Sidebar (){
         <div 
           className="fixed inset-0 bg-black/50 z-30 md:hidden"
           onClick={() => setIsSidebarOpen(false)}
+          data-testid="overlay"
         />
       )}
     </>

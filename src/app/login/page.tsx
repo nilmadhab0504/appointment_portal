@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
@@ -33,10 +34,7 @@ const LoginPage = () => {
   };
 
   const handleSubmit = async () => {
-    // Reset error before validation
     setError(null);
-
-    // Validation
     if (!formData.email) {
       setError("Email is required");
       return;
@@ -74,95 +72,30 @@ const LoginPage = () => {
   };
 
   return (
-    <div 
-      data-testid="login-page"
-      className="min-h-screen flex items-center justify-center bg-gray-100 p-4"
-    >
-      <Card 
-        data-testid="login-card"
-        className="w-full max-w-md mx-auto"
-      >
+    <div data-testid="login-page" className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      <Card data-testid="login-card" className="w-full max-w-md mx-auto">
         <CardHeader>
-          <CardTitle 
-            data-testid="login-title"
-            className="text-2xl font-bold text-center mb-4"
-          >
-            Login
-          </CardTitle>
+          <CardTitle data-testid="login-title" className="text-2xl font-bold text-center mb-4">Login</CardTitle>
           <div className="flex justify-center space-x-4 mb-4">
-            <Button
-              data-testid="doctor-role-button"
-              type="button"
-              variant={formData.role === "doctor" ? "default" : "outline"}
-              onClick={() => setRole("doctor")}
-              className="w-1/2 sm:w-auto"
-            >
-              Doctor
-            </Button>
-            <Button
-              data-testid="admin-role-button"
-              type="button"
-              variant={formData.role === "admin" ? "default" : "outline"}
-              onClick={() => setRole("admin")}
-              className="w-1/2 sm:w-auto"
-            >
-              Admin
-            </Button>
+            <Button data-testid="doctor-role-button" type="button" variant={formData.role === "doctor" ? "default" : "outline"} onClick={() => setRole("doctor")} className="w-1/2 sm:w-auto">Doctor</Button>
+            <Button data-testid="admin-role-button" type="button" variant={formData.role === "admin" ? "default" : "outline"} onClick={() => setRole("admin")} className="w-1/2 sm:w-auto">Admin</Button>
           </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label 
-                htmlFor="email"
-                data-testid="email-label"
-              >
-                Email
-              </Label>
-              <Input
-                data-testid="email-input"
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-              />
+              <Label htmlFor="email" data-testid="email-label">Email</Label>
+              <Input data-testid="email-input" id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} required />
             </div>
             <div className="space-y-2">
-              <Label 
-                htmlFor="password"
-                data-testid="password-label"
-              >
-                Password
-              </Label>
-              <Input
-                data-testid="password-input"
-                id="password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                required
-              />
+              <Label htmlFor="password" data-testid="password-label">Password</Label>
+              <Input data-testid="password-input" id="password" name="password" type="password" value={formData.password} onChange={handleInputChange} required />
             </div>
-            {error && (
-              <p 
-                data-testid="error-message"
-                className="text-sm text-red-500 mt-2"
-              >
-                {error}
-              </p>
-            )}
+            {error && <p data-testid="error-message" className="text-sm text-red-500 mt-2">{error}</p>}
           </div>
         </CardContent>
         <CardFooter>
-          <Button
-            data-testid="login-submit-button"
-            className="w-full"
-            type="button"
-            onClick={handleSubmit}
-          >
+          <Button data-testid="login-submit-button" className="w-full" type="button" onClick={handleSubmit}>
             Login as {formData.role.charAt(0).toUpperCase() + formData.role.slice(1)}
           </Button>
         </CardFooter>

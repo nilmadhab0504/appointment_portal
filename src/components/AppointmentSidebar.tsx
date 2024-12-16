@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import React,{ useState, useEffect } from "react";
 import { Button } from "./ui/button";
+
 import {
   Select,
   SelectContent,
@@ -83,9 +84,9 @@ export function AppointmentSidebar({
   };
 
   return (
-    <div className="fixed top-0 right-0 w-96 h-full bg-white shadow-lg z-50 p-6 overflow-y-auto">
+    <div className="fixed top-0 right-0 w-96 h-full bg-white shadow-lg z-50 p-6 overflow-y-auto" data-testid="appointment-sidebar">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">
+        <h2 className="text-xl font-semibold" data-testid="appointment-title">
           {currentAppointment.id ? "Edit" : "Add"} Appointment
         </h2>
         <Button
@@ -95,6 +96,7 @@ export function AppointmentSidebar({
             setOpenAppointmentCart(false);
             setCurrentAppointment(currentTeampAppointment);
           }}
+          data-testid="close-button"
         >
           <X className="h-6 w-6" />
         </Button>
@@ -113,6 +115,7 @@ export function AppointmentSidebar({
               })
             }
             placeholder="Enter patient name"
+            data-testid="patient-name-input"
           />
         </div>
 
@@ -131,6 +134,7 @@ export function AppointmentSidebar({
             placeholder="Enter patient age"
             min={0}
             max={120}
+            data-testid="patient-age-input"
           />
         </div>
 
@@ -144,6 +148,7 @@ export function AppointmentSidebar({
                 gender: value,
               })
             }
+            data-testid="gender-select"
           >
             <SelectTrigger>
               <SelectValue placeholder="Select Gender" />
@@ -164,13 +169,13 @@ export function AppointmentSidebar({
                 value={specialization}
                 onValueChange={(value: any) => {
                   setSpecialization(value);
-                  // Reset doctor selection when specialization changes
                   setCurrentAppointment({
                     ...currentAppointment,
                     doctorId: undefined,
                     doctorName: undefined,
                   });
                 }}
+                data-testid="specialization-select"
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select Specialization" />
@@ -204,6 +209,7 @@ export function AppointmentSidebar({
                         doctorName: undefined,
                       });
                     }}
+                    data-testid="clear-doctor-button"
                   >
                     Clear
                   </Button>
@@ -211,7 +217,7 @@ export function AppointmentSidebar({
               </Label>
 
               {currentAppointment.doctorName ? (
-                <div className="bg-gray-100 p-2 rounded-md flex justify-between items-center">
+                <div className="bg-gray-100 p-2 rounded-md flex justify-between items-center" data-testid="selected-doctor">
                   <div>
                     <p className="font-medium">
                       {currentAppointment.doctorName}
@@ -226,9 +232,10 @@ export function AppointmentSidebar({
                     value={doctorSearch}
                     onChange={(e) => setDoctorSearch(e.target.value)}
                     className="mb-2"
+                    data-testid="doctor-search-input"
                   />
                   {isLoading ? (
-                    <p>Loading...</p>
+                    <p data-testid="loading-doctors">Loading...</p>
                   ) : (
                     <ul className="space-y-2">
                       {filteredDoctors.map((doctor) => (
@@ -236,6 +243,7 @@ export function AppointmentSidebar({
                           key={doctor.id}
                           onClick={() => handleDoctorSelect(doctor)}
                           className="cursor-pointer hover:bg-gray-100 p-2 rounded-md"
+                          data-testid={`doctor-item-${doctor.id}`}
                         >
                           {doctor.name} ({doctor.specialization})
                         </li>
@@ -260,6 +268,7 @@ export function AppointmentSidebar({
               })
             }
             placeholder="Enter patient's primary disease"
+            data-testid="disease-input"
           />
         </div>
 
@@ -273,6 +282,7 @@ export function AppointmentSidebar({
                 blood: value,
               })
             }
+            data-testid="blood-group-select"
           >
             <SelectTrigger>
               <SelectValue placeholder="Select Blood Group" />
@@ -300,13 +310,14 @@ export function AppointmentSidebar({
                 : ""
             }
             onChange={(e) => {
-              const inputTime = e.target.value; // 'YYYY-MM-DDTHH:mm' format from datetime-local
-              const isoTime = new Date(inputTime).toISOString(); // Convert to ISO format
+              const inputTime = e.target.value;
+              const isoTime = new Date(inputTime).toISOString();
               setCurrentAppointment({
                 ...currentAppointment,
-                time: isoTime, // Save ISO format in the state
+                time: isoTime,
               });
             }}
+            data-testid="appointment-time-input"
           />
         </div>
 
@@ -320,6 +331,7 @@ export function AppointmentSidebar({
                 status: value,
               })
             }
+            data-testid="appointment-status-select"
           >
             <SelectTrigger>
               <SelectValue placeholder="Select Status" />
@@ -345,10 +357,10 @@ export function AppointmentSidebar({
               })
             }
             placeholder="Enter appointment location"
+            data-testid="location-input"
           />
         </div>
 
-        {/* Action Buttons */}
         <div className="flex justify-end gap-2 mt-6">
           <Button
             variant="outline"
@@ -356,12 +368,14 @@ export function AppointmentSidebar({
               setOpenAppointmentCart(false);
               setCurrentAppointment(currentTeampAppointment);
             }}
+            data-testid="cancel-button"
           >
             Cancel
           </Button>
           <Button
             onClick={handleSaveAppointment}
             disabled={!currentAppointment.name || !currentAppointment.time}
+            data-testid="save-appointment-button"
           >
             Save Appointment
           </Button>

@@ -2,7 +2,7 @@
 import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
 import AppointmentsDashboard from "@/components/Appointments";
-import React, { useState } from "react";
+import React from "react";
 import withAuth from "../middleware/withAuth";
 const Home = () => {
   return (

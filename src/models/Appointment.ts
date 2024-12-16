@@ -82,11 +82,11 @@ const AppointmentSchema: Schema = new Schema<AppointmentDocument>(
     doctorId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'Doctor', // Reference to the Doctor model
+      ref: 'Doctor', 
     },
   },
   {
-    timestamps: true, // Automatically adds createdAt and updatedAt
+    timestamps: true, 
   }
 );
 

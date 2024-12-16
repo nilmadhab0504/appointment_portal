@@ -14,7 +14,7 @@ import {
   Appointment,
   currentTeampAppointment,
 } from "../types/appointmentTypes";
-import Pagination from "./Pagination ";
+import Pagination from "./Pagination";
 import { Filters } from "./AppointmentFilter";
 import { AppointmentSidebar } from "./AppointmentSidebar";
 
@@ -25,7 +25,7 @@ export default function AppointmentsDashboard() {
     openAppointmentCart,
     setOpenAppointmentCart,
     fetchAppointments,
-    itemsPerPage
+    itemsPerPage,
   } = useData();
   const { data: session } = useSession();
   const role = session?.user.role;
@@ -55,7 +55,6 @@ export default function AppointmentsDashboard() {
     return appointments.slice(startIndex, startIndex + itemsPerPage);
   }, [appointments, currentPage, itemsPerPage]);
 
-
   const handleEditAppointment = (appointment: Partial<Appointment>) => {
     setCurrentAppointment({ ...appointment });
     setOpenAppointmentCart(true);
@@ -63,7 +62,6 @@ export default function AppointmentsDashboard() {
 
   const handleDeleteAppointment = async (id: string) => {
     try {
-      // Sending the DELETE request to the backend with the id as a query parameter
       const response = await fetch(`/api/appointments?id=${id}`, {
         method: "DELETE",
         headers: {
@@ -74,8 +72,6 @@ export default function AppointmentsDashboard() {
       if (!response.ok) {
         throw new Error("Failed to delete the appointment");
       }
-
-      // Update the state by removing the deleted appointment
       setAppointments(appointments.filter((app) => app.id != id));
     } catch (error: any) {
       console.error("Error deleting appointment:", error.message);
@@ -126,15 +122,28 @@ export default function AppointmentsDashboard() {
 
   return (
     <TooltipProvider>
-      <div className="relative px-4 md:p-6 md:ml-64 max-w-full">
+      <div
+        className="relative px-4 md:p-6 md:ml-64 max-w-full"
+        data-testid="appointments-dashboard"
+      >
         <Filters setCurrentPage={setCurrentPage} />
 
-        <div className="border w-full overflow-auto">
-          <table className="w-full border-collapse overflow-auto">
+        <div
+          className="border w-full overflow-auto"
+          data-testid="appointments-table-container"
+        >
+          <table
+            className="w-full border-collapse overflow-auto"
+            data-testid="appointments-table"
+          >
             <thead>
               <tr className="bg-[#0f1729] rounded-lg text-white w-full sticky top-0 z-10">
                 {tableHeaders.map((key) => (
-                  <th key={key} className="p-4 text-left hover:bg-[#1a2534]">
+                  <th
+                    key={key}
+                    className="p-4 text-left hover:bg-[#1a2534]"
+                    data-testid={`header-${key}`}
+                  >
                     {key.charAt(0).toUpperCase() + key.slice(1)}
                   </th>
                 ))}
@@ -146,8 +155,12 @@ export default function AppointmentsDashboard() {
                 <tr
                   key={appointment.id}
                   className="border-b w-full relative group"
+                  data-testid={`appointment-row-${appointment.id}`}
                 >
-                  <td className="p-4">
+                  <td
+                    className="p-4"
+                    data-testid={`appointment-name-${appointment.id}`}
+                  >
                     <div className="flex items-center gap-3">
                       <div>
                         <div className="font-medium">{appointment.name}</div>
@@ -158,9 +171,22 @@ export default function AppointmentsDashboard() {
                       </div>
                     </div>
                   </td>
-                  <td className="p-4">{appointment.age}</td>
-                  <td className="p-4">{appointment.gender}</td>
-                  <td className="p-4">
+                  <td
+                    className="p-4"
+                    data-testid={`appointment-age-${appointment.id}`}
+                  >
+                    {appointment.age}
+                  </td>
+                  <td
+                    className="p-4"
+                    data-testid={`appointment-gender-${appointment.id}`}
+                  >
+                    {appointment.gender}
+                  </td>
+                  <td
+                    className="p-4"
+                    data-testid={`appointment-disease-${appointment.id}`}
+                  >
                     <Tooltip>
                       <TooltipTrigger>
                         {appointment.disease && appointment.disease.length > 15
@@ -170,17 +196,29 @@ export default function AppointmentsDashboard() {
                       <TooltipContent>{appointment.disease}</TooltipContent>
                     </Tooltip>
                   </td>
-                  <td className="p-4">{appointment.blood}</td>
-                  <td className="p-4">
-                    {appointment.time && new Intl.DateTimeFormat("en-US", {
-                      month: "short",
-                      year: "numeric",
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true,
-                    }).format(new Date(appointment.time))}
+                  <td
+                    className="p-4"
+                    data-testid={`appointment-blood-${appointment.id}`}
+                  >
+                    {appointment.blood}
                   </td>
-                  <td className="p-4">
+                  <td
+                    className="p-4"
+                    data-testid={`appointment-time-${appointment.id}`}
+                  >
+                    {appointment.time &&
+                      new Intl.DateTimeFormat("en-US", {
+                        month: "short",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                        hour12: true,
+                      }).format(new Date(appointment.time))}
+                  </td>
+                  <td
+                    className="p-4"
+                    data-testid={`appointment-status-${appointment.id}`}
+                  >
                     <span
                       className={`rounded-full px-2 py-1 text-xs font-medium 
                       ${
@@ -205,7 +243,10 @@ export default function AppointmentsDashboard() {
                     </span>
                   </td>
                   {role === "admin" && (
-                    <td className="p-4">
+                    <td
+                      className="p-4"
+                      data-testid={`appointment-doctor-${appointment.id}`}
+                    >
                       {appointment.doctorName || "Unassigned"}
                     </td>
                   )}
@@ -215,6 +256,7 @@ export default function AppointmentsDashboard() {
                         variant="outline"
                         size="icon"
                         onClick={() => handleEditAppointment(appointment)}
+                        data-testid={`edit-button-${appointment.id}`}
                       >
                         <Pencil className="h-4 w-4" />
                       </Button>
@@ -222,6 +264,7 @@ export default function AppointmentsDashboard() {
                         variant="outline"
                         size="icon"
                         onClick={() => handleDeleteAppointment(appointment.id!)}
+                        data-testid={`delete-button-${appointment.id}`}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -234,7 +277,11 @@ export default function AppointmentsDashboard() {
         </div>
 
         {itemsPerPage < appointments.length && (
-         <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            data-testid="pagination"
+          />
         )}
 
         {openAppointmentCart && currentAppointment && (
@@ -242,6 +289,7 @@ export default function AppointmentsDashboard() {
             currentAppointment={currentAppointment}
             setCurrentAppointment={setCurrentAppointment}
             handleSaveAppointment={handleSaveAppointment}
+            data-testid="appointment-sidebar"
           />
         )}
       </div>

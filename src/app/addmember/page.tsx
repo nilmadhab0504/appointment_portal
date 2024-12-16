@@ -1,10 +1,16 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Sidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import withAuth from "@/middleware/withAuth";
@@ -17,12 +23,12 @@ interface UserData {
 }
 
 const AddUserPage = () => {
-  const [userType, setUserType] = useState<'admin' | 'doctor'>('admin');
+  const [userType, setUserType] = useState<"admin" | "doctor">("admin");
   const [formData, setFormData] = useState<UserData>({
-    name: '',
-    email: '',
-    password: '',
-    specialization: '',
+    name: "",
+    email: "",
+    password: "",
+    specialization: "",
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -34,43 +40,23 @@ const AddUserPage = () => {
     setSuccess(null);
   };
 
-  const setUserTypeAndResetForm = (type: 'admin' | 'doctor') => {
+  const setUserTypeAndResetForm = (type: "admin" | "doctor") => {
     setUserType(type);
-    setFormData({
-      name: '',
-      email: '',
-      password: '',
-      specialization: '',
-    });
+    setFormData({ name: "", email: "", password: "", specialization: "" });
     setError(null);
     setSuccess(null);
   };
 
   const validateForm = () => {
-    if (!formData.name) {
-      setError("Name is required");
-      return false;
-    }
-    if (!formData.email) {
-      setError("Email is required");
-      return false;
-    }
-    if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      setError("Email is invalid");
-      return false;
-    }
-    if (!formData.password) {
-      setError("Password is required");
-      return false;
-    }
-    if (formData.password.length < 8) {
-      setError("Password must be at least 8 characters");
-      return false;
-    }
-    if (userType === 'doctor' && !formData.specialization) {
-      setError("Specialization is required for doctors");
-      return false;
-    }
+    if (!formData.name) return setError("Name is required"), false;
+    if (!formData.email) return setError("Email is required"), false;
+    if (!/\S+@\S+\.\S+/.test(formData.email))
+      return setError("Email is invalid"), false;
+    if (!formData.password) return setError("Password is required"), false;
+    if (formData.password.length < 8)
+      return setError("Password must be at least 8 characters"), false;
+    if (userType === "doctor" && !formData.specialization)
+      return setError("Specialization is required for doctors"), false;
     return true;
   };
 
@@ -79,19 +65,18 @@ const AddUserPage = () => {
 
     try {
       const response = await fetch(`/api/${userType}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
       const data = await response.json();
       if (response.status === 201) {
-        setSuccess(`${userType.charAt(0).toUpperCase() + userType.slice(1)} added successfully`);
-        setFormData({
-          name: '',
-          email: '',
-          password: '',
-          specialization: '',
-        });
+        setSuccess(
+          `${
+            userType.charAt(0).toUpperCase() + userType.slice(1)
+          } added successfully`
+        );
+        setFormData({ name: "", email: "", password: "", specialization: "" });
       } else {
         setError(data.error || `Error adding ${userType}`);
       }
@@ -107,12 +92,12 @@ const AddUserPage = () => {
         <Header />
         <main className="flex-1 md:ml-60 md:mt-20 bg-gray-100">
           <div className="container mx-auto px-6 py-8">
-            <Card 
+            <Card
               data-testid="add-user-card"
               className="w-full max-w-md mx-auto"
             >
               <CardHeader>
-                <CardTitle 
+                <CardTitle
                   data-testid="add-user-title"
                   className="text-2xl font-bold text-center mb-4"
                 >
@@ -142,10 +127,7 @@ const AddUserPage = () => {
               <CardContent>
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label 
-                      htmlFor="name"
-                      data-testid="name-label"
-                    >
+                    <Label htmlFor="name" data-testid="name-label">
                       Name
                     </Label>
                     <Input
@@ -159,10 +141,7 @@ const AddUserPage = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label 
-                      htmlFor="email"
-                      data-testid="email-label"
-                    >
+                    <Label htmlFor="email" data-testid="email-label">
                       Email
                     </Label>
                     <Input
@@ -176,10 +155,7 @@ const AddUserPage = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label 
-                      htmlFor="password"
-                      data-testid="password-label"
-                    >
+                    <Label htmlFor="password" data-testid="password-label">
                       Password
                     </Label>
                     <Input
@@ -192,9 +168,9 @@ const AddUserPage = () => {
                       required
                     />
                   </div>
-                  {userType === 'doctor' && (
+                  {userType === "doctor" && (
                     <div className="space-y-2">
-                      <Label 
+                      <Label
                         htmlFor="specialization"
                         data-testid="specialization-label"
                       >
@@ -212,7 +188,7 @@ const AddUserPage = () => {
                     </div>
                   )}
                   {error && (
-                    <p 
+                    <p
                       data-testid="error-message"
                       className="text-sm text-red-500 mt-2"
                     >
@@ -220,7 +196,7 @@ const AddUserPage = () => {
                     </p>
                   )}
                   {success && (
-                    <p 
+                    <p
                       data-testid="success-message"
                       className="text-sm text-green-500 mt-2"
                     >

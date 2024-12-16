@@ -37,7 +37,7 @@ const DoctorSchema: Schema = new Schema<DoctorDocument>(
     },
   },
   {
-    timestamps: true, // Automatically adds createdAt and updatedAt
+    timestamps: true, 
   }
 );
 
