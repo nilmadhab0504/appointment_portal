@@ -10,8 +10,9 @@ src
 /components
 /context
 /app 
-/types 
-/utils
+/types
+/lib
+/models
 ```
 
 ## Getting Started
